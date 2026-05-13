@@ -1,13 +1,11 @@
-<script lang="ts" setup>
-import { LibraryBigIcon } from 'lucide-vue-next'
-</script>
-
 <template>
-  <NuxtLink to="/" class="text-3xl font-semibold flex items-center gap-1">
-    <LibraryBigIcon class="w-8 h-8 text-violet-600" />
-    <div>
-      <p class="text-sm font-medium -mb-2">THE</p>
-      <h1>VINY<span class="text-violet-600">LATA</span></h1>
+  <NuxtLink to="/" class="flex items-center gap-2 select-none">
+    <div class="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center">
+      <Icon name="lucide:sparkles" class="w-4 h-4 text-primary" />
+    </div>
+    <div class="leading-none">
+      <span class="font-heading text-xl font-semibold tracking-wide">LUMINA</span>
+      <span class="text-primary font-heading text-xl font-semibold"> SKIN</span>
     </div>
   </NuxtLink>
 </template>

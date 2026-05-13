@@ -1,41 +1,46 @@
 <template>
-  <div class="about-section grid grid-cols-2 lg:grid-cols-4 gap-4">
-    <CommonAppMagicCard
-      v-for="(CONTENT, i) in CONTENTS"
-      :key="i"
-      :icon="CONTENT.icon"
-      :description="CONTENT.description"
-      :title="CONTENT.title"
-    />
-  </div>
+  <section class="py-12 px-4 sm:px-6 lg:px-16">
+    <div class="max-w-5xl mx-auto">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div
+          v-for="item in features"
+          :key="item.title"
+          class="flex flex-col items-center text-center p-5 rounded-2xl bg-card border border-border hover:border-primary/30 hover:shadow-sm transition-all duration-300 gap-3"
+        >
+          <div class="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+            <Icon :name="item.icon" class="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-foreground leading-snug">{{ item.title }}</p>
+            <p class="text-[12px] text-muted-foreground mt-1 leading-relaxed">{{ item.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script lang="ts" setup>
-import { CreditCard, Headset, Package, MapPin } from 'lucide-vue-next'
-const CONTENTS = [
+const features = [
   {
-    title: 'Payments',
-    icon: CreditCard,
-    description:
-      'We offer secure and convenient payment options to ensure a smooth checkout experience for all users.',
+    title: 'Pago Seguro',
+    icon: 'lucide:shield-check',
+    description: 'Paga con MercadoPago, tarjeta débito o crédito. Tus datos siempre protegidos.',
   },
   {
-    title: 'Customer Support',
-    icon: Headset,
-    description:
-      'Our customer support team is available 24/7 to assist with any inquiries or issues you may have.',
+    title: 'Atención al Cliente',
+    icon: 'lucide:headphones',
+    description: 'Resolvemos tus dudas sobre rutinas y productos. Estamos aquí para ayudarte.',
   },
   {
-    title: 'Returns',
-    icon: Package,
-    description:
-      'Enjoy an easy and hassle-free return process with clear instructions and quick refunds.',
+    title: 'Cambios y Devoluciones',
+    icon: 'lucide:refresh-cw',
+    description: 'Si el producto llega en mal estado, lo cambiamos sin complicaciones.',
   },
   {
-    title: 'Tracking',
-    icon: MapPin,
-    description:
-      'Stay updated with real-time order tracking to know exactly where your package is at all times.',
+    title: 'Envío a Colombia',
+    icon: 'lucide:truck',
+    description: 'Despachos a todo el territorio colombiano. Seguimiento en tiempo real.',
   },
 ]
 </script>

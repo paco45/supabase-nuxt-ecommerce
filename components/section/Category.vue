@@ -1,68 +1,74 @@
 <template>
-  <section>
-    <div
-      class="grid grid-cols-2 lg:grid-cols-3 gap-1 sm:gap-6 lg:gap-4 mt-4 sm:mt-6 lg:mt-8"
-    >
-      <template v-if="isLoading">
-        <AspectRatio v-for="n in 6" :key="n" :ratio="1 / 1">
-          <Skeleton class="h-full w-full"></Skeleton>
-        </AspectRatio>
-      </template>
-      <template v-else>
-        <NuxtLink
-          v-for="category in categories"
-          :key="category.id"
-          class="relative overflow-hidden cursor-pointer"
-          :to="`/collections/${category.slug}`"
-        >
-          <AspectRatio
-            :ratio="1 / 1"
-            class="hover:scale-[1.05] transform transition-transform duration-300 ease-in-out"
+  <section class="px-4 sm:px-6 lg:px-16 py-10">
+    <div class="max-w-6xl mx-auto">
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <h2 class="font-heading text-3xl sm:text-4xl font-semibold text-foreground">
+          Explora por <span class="text-primary italic">categoría</span>
+        </h2>
+        <p class="text-sm text-muted-foreground mt-2">Encuentra exactamente lo que tu piel necesita</p>
+      </div>
+
+      <!-- Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+        <template v-if="isLoading">
+          <div v-for="n in 6" :key="n" class="aspect-square rounded-2xl bg-muted animate-pulse" />
+        </template>
+        <template v-else>
+          <NuxtLink
+            v-for="category in categories"
+            :key="category.id"
+            :to="`/collections/${category.slug}`"
+            class="group relative overflow-hidden rounded-2xl aspect-square cursor-pointer"
           >
+            <!-- Image -->
             <img
-              class="category-section__img w-full h-full object-cover"
-              :src="category.backgroundImage || ''"
+              v-if="category.backgroundImage"
+              :src="category.backgroundImage"
               :alt="category.name"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
-            <div
-              class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl sm:text-4xl lg:text-5xl text-white w-full text-center font-extrabold px-2"
-            >
-              {{ category.name }}
+            <div v-else class="w-full h-full bg-gradient-to-br from-primary/20 to-accent" />
+
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
+
+            <!-- Label -->
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <p class="text-white font-heading text-lg sm:text-xl lg:text-2xl font-semibold leading-snug drop-shadow-sm">
+                {{ category.name }}
+              </p>
+              <p class="text-white/70 text-xs mt-0.5 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                Ver productos <Icon name="lucide:arrow-right" class="w-3 h-3" />
+              </p>
             </div>
-            <div class="absolute inset-0 bg-violet-900 opacity-30" />
-          </AspectRatio>
-        </NuxtLink>
-      </template>
+          </NuxtLink>
+        </template>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import AspectRatio from '../ui/aspect-ratio/AspectRatio.vue'
-import Skeleton from '../ui/skeleton/Skeleton.vue'
 import type { Tables } from '~/types/database.types'
 
 const supabase = useSupabaseClient()
 
 const categories = ref<Tables<'categories'>[]>([])
-const isLoading = ref(false)
+const isLoading = ref(true)
 
-async function fetchSampleCategories() {
+async function fetchCategories() {
   isLoading.value = true
   const { data, error } = await supabase
     .from('categories')
     .select('*')
-    .order('id', { ascending: false })
+    .order('id', { ascending: true })
     .limit(6)
-  if (error) {
-    console.log(error)
-  } else {
+  if (!error && data) {
     categories.value = data
-    isLoading.value = false
   }
+  isLoading.value = false
 }
 
-fetchSampleCategories()
+fetchCategories()
 </script>
-
-<style scoped></style>

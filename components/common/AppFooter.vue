@@ -1,147 +1,129 @@
 <script lang="ts" setup>
-import {
-  FacebookIcon,
-  TwitterIcon,
-  InstagramIcon,
-  MailIcon,
-  GithubIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from 'lucide-vue-next'
-import AppFooterItem from './AppFooterItem.vue'
+const shopLinks = [
+  { to: '/collections/serums', label: 'Sérums' },
+  { to: '/collections/hidratantes', label: 'Hidratantes' },
+  { to: '/collections/proteccion-solar', label: 'Protección Solar' },
+  { to: '/collections/mascarillas', label: 'Mascarillas' },
+  { to: '/collections/kits', label: 'Kits de rutina' },
+]
 
-const footerLinks = ref([
-  { to: '/collections/new-release', label: 'New Release' },
-  { to: '/pre-orders', label: 'Pre-orders' },
-  { to: '/collections/all', label: 'Genres' },
-  { to: '/pop', label: 'Pop' },
-])
+const supportLinks = [
+  { to: '/faq', label: 'Preguntas frecuentes' },
+  { to: '/contact', label: 'Contacto' },
+  { to: '/shipping', label: 'Envíos y entregas' },
+  { to: '/returns', label: 'Cambios y devoluciones' },
+]
 
-const supportLinks = ref([
-  { to: '/about', label: 'About' },
-  { to: '/faq', label: 'FAQ' },
-  { to: '/contact', label: 'Contact' },
-  { to: '/shipping', label: 'Shipping' },
-  { to: '/returns', label: 'Returns' },
-])
+const accountLinks = [
+  { to: '/account/login', label: 'Iniciar sesión' },
+  { to: '/account/register', label: 'Registrarse' },
+  { to: '/wishlist', label: 'Mis favoritos' },
+  { to: '/account/orders', label: 'Mis pedidos' },
+]
 
-const accountLinks = ref([
-  { to: '/login', label: 'Login' },
-  { to: '/register', label: 'Register' },
-  { to: '/shipping', label: 'My Cart' },
-  { to: '/returns', label: 'My Wishlist' },
-  { to: '/orders', label: 'My Order' },
-])
-
-const socialLinks = ref([
-  { href: '#', icon: FacebookIcon, label: 'Facebook' },
-  { href: '#', icon: TwitterIcon, label: 'Twitter' },
-  { href: '#', icon: InstagramIcon, label: 'Instagram' },
-  { href: '#', icon: MailIcon, label: 'Mail' },
-  {
-    href: 'https://github.com/haithanhphan1603',
-    icon: GithubIcon,
-    label: 'Github',
-    target: '_blank',
-  },
-])
+const socialLinks = [
+  { href: 'https://instagram.com', icon: 'lucide:instagram', label: 'Instagram' },
+  { href: 'https://facebook.com', icon: 'lucide:facebook', label: 'Facebook' },
+  { href: 'mailto:hola@luminaskin.co', icon: 'lucide:mail', label: 'Email' },
+]
 
 const expandedSections = ref<Record<string, boolean>>({
-  letsVinyl: false,
+  shop: false,
   support: false,
   account: false,
 })
-
-const toggleSection = (section: string | number) => {
-  expandedSections.value[section] = !expandedSections.value[section]
-}
 </script>
 
 <template>
-  <footer class="bg-background pt-10 pb-8">
+  <footer class="bg-muted/30 border-t border-border pt-10 pb-6">
     <div class="px-4 sm:px-6 lg:px-16 mx-auto">
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8 sm:gap-4"
-      >
-        <div class="flex flex-col gap-2">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Brand column -->
+        <div class="flex flex-col gap-3">
           <CommonAppLogo />
-          <a class="font-extralight">therecord@vinylata.com</a>
-          <div class="flex gap-2 mt-2">
+          <p class="text-sm text-muted-foreground leading-relaxed max-w-xs">
+            Rutinas de skincare con ingredientes activos clínicamente probados. Para tu mejor piel.
+          </p>
+          <a href="mailto:hola@luminaskin.co" class="text-sm text-muted-foreground hover:text-primary transition-colors">
+            hola@luminaskin.co
+          </a>
+          <div class="flex gap-1 mt-1">
             <a
               v-for="link in socialLinks"
               :key="link.label"
               :href="link.href"
-              :target="link.target || '_self'"
-              class="border-none rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              target="_blank"
+              class="p-2 rounded-full hover:bg-muted transition-colors"
+              :aria-label="link.label"
             >
-              <component :is="link.icon" class="h-5 w-5" />
-              <span class="sr-only">{{ link.label }}</span>
+              <Icon :name="link.icon" class="h-4 w-4 text-muted-foreground hover:text-primary transition-colors" />
             </a>
           </div>
         </div>
 
-        <div class="sm:hidden">
-          <div
-            class="flex justify-between items-center py-2 cursor-pointer"
-            @click="toggleSection('letsVinyl')"
-          >
-            <h3 class="font-semibold">Let's Vinyl</h3>
-            <component
-              :is="expandedSections.letsVinyl ? ChevronUpIcon : ChevronDownIcon"
-              class="h-5 w-5"
-            />
-          </div>
-          <AppFooterItem
-            v-if="expandedSections.letsVinyl"
-            label="Let's Vinyl"
-            :footer-links="footerLinks"
-          />
-        </div>
-
-        <div class="sm:hidden">
-          <div
-            class="flex justify-between items-center py-2 cursor-pointer"
-            @click="toggleSection('support')"
-          >
-            <h3 class="font-semibold">Support</h3>
-            <component
-              :is="expandedSections.support ? ChevronUpIcon : ChevronDownIcon"
-              class="h-5 w-5"
-            />
-          </div>
-          <AppFooterItem
-            v-if="expandedSections.support"
-            label="Support"
-            :footer-links="supportLinks"
-          />
-        </div>
-
-        <div class="sm:hidden">
-          <div
-            class="flex justify-between items-center py-2 cursor-pointer"
-            @click="toggleSection('account')"
-          >
-            <h3 class="font-semibold">Account</h3>
-            <component
-              :is="expandedSections.account ? ChevronUpIcon : ChevronDownIcon"
-              class="h-5 w-5"
-            />
-          </div>
-          <AppFooterItem
-            v-if="expandedSections.account"
-            label="Account"
-            :footer-links="accountLinks"
-          />
-        </div>
-
+        <!-- Desktop link columns -->
         <div class="hidden sm:block">
-          <AppFooterItem label="Let's Vinyl" :footer-links="footerLinks" />
+          <p class="text-sm font-semibold text-foreground mb-3">Tienda</p>
+          <ul class="flex flex-col gap-2">
+            <li v-for="link in shopLinks" :key="link.label">
+              <NuxtLink :to="link.to" class="text-sm text-muted-foreground hover:text-primary transition-colors">
+                {{ link.label }}
+              </NuxtLink>
+            </li>
+          </ul>
         </div>
         <div class="hidden sm:block">
-          <AppFooterItem label="Support" :footer-links="supportLinks" />
+          <p class="text-sm font-semibold text-foreground mb-3">Soporte</p>
+          <ul class="flex flex-col gap-2">
+            <li v-for="link in supportLinks" :key="link.label">
+              <NuxtLink :to="link.to" class="text-sm text-muted-foreground hover:text-primary transition-colors">
+                {{ link.label }}
+              </NuxtLink>
+            </li>
+          </ul>
         </div>
         <div class="hidden sm:block">
-          <AppFooterItem label="Account" :footer-links="accountLinks" />
+          <p class="text-sm font-semibold text-foreground mb-3">Mi cuenta</p>
+          <ul class="flex flex-col gap-2">
+            <li v-for="link in accountLinks" :key="link.label">
+              <NuxtLink :to="link.to" class="text-sm text-muted-foreground hover:text-primary transition-colors">
+                {{ link.label }}
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Mobile accordion -->
+        <div class="sm:hidden col-span-1">
+          <div
+            v-for="(section, key) in { shop: { label: 'Tienda', links: shopLinks }, support: { label: 'Soporte', links: supportLinks }, account: { label: 'Mi cuenta', links: accountLinks } }"
+            :key="key"
+            class="border-b border-border"
+          >
+            <button
+              class="w-full flex justify-between items-center py-3 text-sm font-semibold text-foreground"
+              @click="expandedSections[key] = !expandedSections[key]"
+            >
+              {{ section.label }}
+              <Icon :name="expandedSections[key] ? 'lucide:chevron-up' : 'lucide:chevron-down'" class="w-4 h-4" />
+            </button>
+            <ul v-if="expandedSections[key]" class="pb-3 flex flex-col gap-2">
+              <li v-for="link in section.links" :key="link.label">
+                <NuxtLink :to="link.to" class="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  {{ link.label }}
+                </NuxtLink>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
+        <p>© {{ new Date().getFullYear() }} LUMINA SKIN. Todos los derechos reservados.</p>
+        <div class="flex items-center gap-1">
+          <Icon name="lucide:map-pin" class="w-3 h-3" />
+          Colombia
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p v-if="!isMobile" class="font-extrabold text-violet-600">{{ label }}</p>
+    <p v-if="!isMobile" class="text-sm font-semibold text-foreground mb-3">{{ label }}</p>
 
     <ul class="flex flex-col gap-1 mt-1">
       <li v-for="link in footerLinks" :key="link.label">
