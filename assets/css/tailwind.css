@@ -1,75 +1,82 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
+    /* Skin Care — tonos cálidos, limpios y pasteles */
+    --background: 30 33% 98%;          /* crema blanco */
+    --foreground: 20 20% 18%;          /* marrón cálido profundo */
 
     --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
+    --card-foreground: 20 20% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
+    --popover-foreground: 20 20% 18%;
 
-    --primary: 262.1 83.3% 57.8%;
-    --primary-foreground: 210 20% 98%;
+    --primary: 340 35% 62%;            /* rosa blush */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
+    --secondary: 120 12% 93%;          /* sage muy claro */
+    --secondary-foreground: 20 20% 18%;
 
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
+    --muted: 30 20% 94%;               /* crema suave */
+    --muted-foreground: 20 12% 52%;
 
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
+    --accent: 35 45% 90%;              /* arena cálida */
+    --accent-foreground: 20 20% 18%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
+    --destructive: 0 72% 58%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 262.1 83.3% 57.8%;
-    --radius: 0rem;
+    --border: 30 15% 88%;
+    --input: 30 15% 88%;
+    --ring: 340 35% 62%;
+    --radius: 0.5rem;
   }
 
   .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
+    --background: 20 15% 10%;
+    --foreground: 30 25% 93%;
 
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
+    --card: 20 15% 13%;
+    --card-foreground: 30 25% 93%;
 
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
+    --popover: 20 15% 13%;
+    --popover-foreground: 30 25% 93%;
 
-    --primary: 263.4 70% 50.4%;
-    --primary-foreground: 210 20% 98%;
+    --primary: 340 30% 58%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
+    --secondary: 20 10% 20%;
+    --secondary-foreground: 30 25% 93%;
 
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
+    --muted: 20 10% 20%;
+    --muted-foreground: 30 12% 60%;
 
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 20% 98%;
+    --accent: 30 20% 22%;
+    --accent-foreground: 30 25% 93%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
+    --destructive: 0 62% 38%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 263.4 70% 50.4%;
+    --border: 20 10% 22%;
+    --input: 20 10% 22%;
+    --ring: 340 30% 58%;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'DM Sans', Arial, sans-serif;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    @apply font-semibold tracking-tight;
   }
 }

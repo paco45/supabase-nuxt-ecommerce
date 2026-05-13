@@ -52,19 +52,25 @@ export default defineNuxtConfig({
   css: ['~/assets/css/tailwind.css', '~/assets/scss/main.scss'],
   compatibilityDate: '2024-08-17',
   fonts: {
-    provider: 'google', // sets default provider
+    provider: 'google',
     families: [
       {
-        name: 'Roboto', // the 'canonical' name of the font used to look it up in a provider database
-        provider: 'google', // you can override the provider on a per-family basis
-        // provider specific options can be provided
-        // specific configuration will be used to generate `@font-face` definitions
-        subsets: ['latin', 'greek'],
-        display: 'swap', // or 'block'
-        weight: [400, 700],
+        name: 'Cormorant Garamond',
+        provider: 'google',
+        subsets: ['latin'],
+        display: 'swap',
+        weight: [400, 500, 600, 700],
         styles: ['normal', 'italic'],
-        // and produce CSS overrides to reduce layout shift (using fontaine)
-        fallbacks: ['Arial'],
+        fallbacks: ['Georgia', 'serif'],
+      },
+      {
+        name: 'DM Sans',
+        provider: 'google',
+        subsets: ['latin'],
+        display: 'swap',
+        weight: [300, 400, 500, 600],
+        styles: ['normal'],
+        fallbacks: ['Arial', 'sans-serif'],
       },
     ],
   },

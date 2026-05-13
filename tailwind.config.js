@@ -15,6 +15,10 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        heading: ['Cormorant Garamond', 'Georgia', 'serif'],
+        sans: ['DM Sans', 'Arial', 'sans-serif'],
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
