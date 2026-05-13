@@ -60,7 +60,7 @@ export const useCartStore = defineStore(
       const now = new Date().toISOString()
       return {
         totalprice: 0,
-        currency: '$',
+        currency: 'COP',
         createdat: now,
         updatedat: now,
         createdby: createdBy,

@@ -1,92 +1,93 @@
 <template>
-  <Card class="sm:w-[420px] w-[300px] overflow-scroll max-h-[620px] z-10">
-    <CardHeader class="text-center p-3 border-b-slate-200 border-b">
-      <CardTitle class="text-md"
-        >Your Viny<span class="text-violet-600">lata</span> Cart ({{
-          totalQuantity
-        }})</CardTitle
-      >
-    </CardHeader>
-    <div v-if="cartItems.length > 0">
-      <CardContent class="p-0 border-b-slate-200">
-        <ul>
-          <li
-            v-for="(item, index) in cartItems"
-            :key="item.productId ?? `fallback-${index}`"
-          >
-            <CartItem
-              variant="dropdown"
-              :item
-              @decrease-quantity="decreaseItemQuantity(index)"
-              @increase-quantity="increaseItemQuantity(index)"
-              @remove-item="removeCartItem(index)"
-            />
-          </li>
-        </ul>
-      </CardContent>
-      <CardContent>
-        <div
-          class="pt-2 border-b-slate-200 flex gap-2 justify-between max-sm:flex-col"
-        >
-          <div class="flex items-center gap-1">
-            <div class="rounded-full bg-violet-600 p-1">
-              <Earth class="h-4 w-4" color="white" stroke-width="1" />
-            </div>
-            <span class="text-xs">World Wide Shipping</span>
-          </div>
-          <div class="flex items-center gap-1">
-            <div class="rounded-full bg-violet-600 p-1">
-              <ShieldCheck class="h-4 w-4" color="white" stroke-width="1" />
-            </div>
-            <span class="text-xs"> Secure Checkout </span>
-          </div>
-        </div>
-        <Separator class="my-2" />
-        <div class="flex justify-between text-base font-bold">
-          <span>Total</span>
-          <span>${{ totalPrice }}</span>
-        </div>
-        <Separator class="my-2" />
-        <div class="flex gap-2">
-          <Button class="w-full uppercase font-bold" @click="navigateToCart">
-            Proceed to Checkout
-          </Button>
-        </div>
-      </CardContent>
+  <div class="w-[340px] sm:w-[400px] bg-card border border-border rounded-2xl shadow-lg overflow-hidden">
+    <!-- Header -->
+    <div class="px-4 py-3 border-b border-border flex items-center justify-between">
+      <h3 class="text-sm font-semibold text-foreground">
+        Mi carrito
+        <span class="ml-1 text-muted-foreground font-normal">({{ totalQuantity }})</span>
+      </h3>
     </div>
-    <CardContent v-else>
-      <div class="flex flex-col items-center justify-center p-6">
-        <ShoppingBasket class="h-16 w-16 text-violet-600" />
-        <h3 class="text-xl">Your cart is empty</h3>
-        <Button class="mt-4" @click="navigateToAllProducts">
-          Continue Shopping
-        </Button>
+
+    <!-- Items -->
+    <div v-if="cartItems.length > 0">
+      <ul class="max-h-[340px] overflow-y-auto divide-y divide-border">
+        <li
+          v-for="(item, index) in cartItems"
+          :key="item.productId ?? `fallback-${index}`"
+        >
+          <CartItem
+            variant="dropdown"
+            :item
+            @decrease-quantity="decreaseItemQuantity(index)"
+            @increase-quantity="increaseItemQuantity(index)"
+            @remove-item="removeCartItem(index)"
+          />
+        </li>
+      </ul>
+
+      <div class="px-4 py-3 border-t border-border space-y-3">
+        <!-- Trust badges -->
+        <div class="flex gap-3 text-[11px] text-muted-foreground">
+          <span class="flex items-center gap-1">
+            <Icon name="lucide:truck" class="w-3.5 h-3.5 text-primary" /> Envío a Colombia
+          </span>
+          <span class="flex items-center gap-1">
+            <Icon name="lucide:shield-check" class="w-3.5 h-3.5 text-green-500" /> Pago seguro
+          </span>
+        </div>
+
+        <!-- Total -->
+        <div class="flex justify-between items-center text-sm font-semibold">
+          <span>Total</span>
+          <span class="text-primary text-base">{{ formatCOP(cart?.totalprice ?? 0) }}</span>
+        </div>
+
+        <!-- CTA -->
+        <button
+          class="w-full h-10 rounded-xl bg-foreground text-background text-sm font-semibold hover:bg-foreground/90 transition-colors"
+          @click="navigateToCart"
+        >
+          Ir al pago
+        </button>
       </div>
-    </CardContent>
-  </Card>
+    </div>
+
+    <!-- Empty state -->
+    <div v-else class="flex flex-col items-center justify-center py-10 px-4 text-center">
+      <div class="w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-3">
+        <Icon name="lucide:shopping-bag" class="w-6 h-6 text-muted-foreground" />
+      </div>
+      <p class="text-sm font-medium text-foreground mb-1">Tu carrito está vacío</p>
+      <p class="text-xs text-muted-foreground mb-4">Agrega productos para comenzar</p>
+      <button
+        class="h-9 px-5 rounded-xl bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 transition-colors"
+        @click="navigateToAllProducts"
+      >
+        Ver productos
+      </button>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useCartStore } from '~/store/cart'
-import { Earth, ShieldCheck, ShoppingBasket } from 'lucide-vue-next'
-import { Separator } from '../ui/separator'
-import { Button } from '../ui/button'
 
 const cartStore = useCartStore()
 const { decreaseItemQuantity, increaseItemQuantity, removeCartItem } = cartStore
 const { totalQuantity, cartItems, cart } = storeToRefs(cartStore)
 const router = useRouter()
 
-const totalPrice = computed(() => {
-  return cart.value?.totalprice?.toFixed(2)
-})
+function formatCOP(value: number) {
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency', currency: 'COP', maximumFractionDigits: 0,
+  }).format(value)
+}
 
 function navigateToCart() {
-  router.push('/cart')
+  router.push('/checkout')
 }
 
 function navigateToAllProducts() {
-  router.push('/collections/all')
+  router.push('/collections/serums')
 }
 </script>

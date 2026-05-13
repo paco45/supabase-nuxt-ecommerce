@@ -7,7 +7,7 @@ export const useCart = (item: Ref<TablesInsert<'cartItems'>>) => {
   const product = ref<ProductWithVendor>()
 
   const cartItemPrice = computed(() =>
-    (item.value.price * item.value.quantity).toFixed(2),
+    item.value.price * item.value.quantity,
   )
   async function fetchProductData() {
     product.value = await fetchProductById(item.value.productId as number)

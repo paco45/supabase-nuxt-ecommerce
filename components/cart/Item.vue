@@ -1,106 +1,101 @@
 <template>
-  <Card
-    v-if="variant === 'dropdown'"
-    class="flex gap-6 max-sm:gap-4 relative p-4 items-center"
-  >
-    <div
-      class="flex justify-center items-center h-[100px] w-[100px] min-w-[100px]"
-    >
-      <img class="object-contain" :src="product?.primaryImage as string" />
-    </div>
-    <div class="flex flex-col gap-0.5 w-1/2">
-      <div>
-        <CommonAppLink to="#" class="!font-bold text-sm">
-          {{ product?.vendors?.name }}
-        </CommonAppLink>
-        <CommonAppLink class="text-sm" :to="`/products/${product?.slug}`">
-          <h4>{{ product?.name }}</h4>
-        </CommonAppLink>
-        <h5 class="font-bold text-sm">${{ cartItemPrice }}</h5>
-      </div>
-
-      <div class="flex mt-1">
-        <Button
-          class="text-xs bg-violet-500 text-white"
-          size="xs"
-          :disabled="item.quantity === 1"
-          @click="emit('decreaseQuantity')"
-        >
-          <Minus class="h-3 w-3" />
-        </Button>
-        <div class="border border-input w-14 text-center">
-          {{ item.quantity }}
-        </div>
-        <Button
-          class="text-xs bg-violet-500 text-white"
-          size="xs"
-          @click="emit('increaseQuantity')"
-        >
-          <Plus class="h-3 w-3" />
-        </Button>
-      </div>
-      <CircleX
-        class="absolute right-3 cursor-pointer"
-        fill="#cbd5e1"
-        color="#1e293b"
-        stroke-width="1"
-        @click="emit('removeItem')"
-      />
-    </div>
-  </Card>
-
-  <div v-else class="flex items-center justify-between py-2 border-t relative">
-    <div class="flex w-1/2 gap-8 items-center">
+  <!-- Dropdown / mobile variant -->
+  <div v-if="variant === 'dropdown'" class="flex gap-3 p-3 items-center">
+    <NuxtLink :to="`/products/${product?.slug}`" class="shrink-0">
       <img
-        :src="product?.primaryImage as string"
-        alt="Product image"
-        class="w-40 h-40 object-contain"
+        :src="product?.primaryImage ?? ''"
+        :alt="product?.name"
+        class="w-20 h-20 rounded-xl object-cover bg-muted"
       />
-      <div>
-        <h3 class="font-bold">{{ product?.name }}</h3>
-        <p class="text-gray-600">{{ product?.vendors?.name }}</p>
-      </div>
-    </div>
-    <div class="flex w-1/2 justify-between items-center text-center">
-      <p class="font-bold w-1/3">{{ product?.currency }} {{ item.price }}</p>
-      <div class="flex w-1/3 justify-center">
-        <Button
-          class="text-xs bg-violet-500 text-white"
-          size="sm"
-          :disabled="item.quantity === 1"
-          @click="emit('decreaseQuantity')"
-        >
-          <Minus class="h-4 w-4" />
-        </Button>
-        <div class="border border-input w-14 flex items-center justify-center">
-          {{ item.quantity }}
+    </NuxtLink>
+    <div class="flex-1 min-w-0">
+      <NuxtLink :to="`/products/${product?.slug}`">
+        <p class="text-sm font-medium text-foreground line-clamp-2 leading-snug hover:text-primary transition-colors">
+          {{ product?.name }}
+        </p>
+      </NuxtLink>
+      <p class="text-xs text-primary font-medium mt-0.5">{{ formatCOP(item.price) }} c/u</p>
+      <div class="flex items-center gap-2 mt-2">
+        <!-- Quantity controls -->
+        <div class="flex items-center border border-border rounded-lg overflow-hidden h-7">
+          <button
+            class="w-7 flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-40"
+            :disabled="item.quantity === 1"
+            @click="emit('decreaseQuantity')"
+          >
+            <Icon name="lucide:minus" class="w-3 h-3" />
+          </button>
+          <span class="w-7 text-center text-xs font-medium">{{ item.quantity }}</span>
+          <button
+            class="w-7 flex items-center justify-center hover:bg-muted transition-colors"
+            @click="emit('increaseQuantity')"
+          >
+            <Icon name="lucide:plus" class="w-3 h-3" />
+          </button>
         </div>
-        <Button
-          class="text-xs bg-violet-500 text-white"
-          size="sm"
-          @click="emit('increaseQuantity')"
-        >
-          <Plus class="h-4 w-4" />
-        </Button>
+        <span class="text-sm font-semibold ml-auto">{{ formatCOP(cartItemPrice) }}</span>
       </div>
-      <p class="font-bold w-1/3">
-        {{ product?.currency }}
-        {{ cartItemPrice }}
-      </p>
-      <CircleX
-        class="cart-item__circle-x absolute right-0 top-[15%] cursor-pointer"
-        fill="#cbd5e1"
-        color="#1e293b"
-        stroke-width="1"
-        @click="emit('removeItem')"
-      />
     </div>
+    <button class="shrink-0 p-1 text-muted-foreground hover:text-foreground transition-colors self-start" @click="emit('removeItem')">
+      <Icon name="lucide:x" class="w-4 h-4" />
+    </button>
+  </div>
+
+  <!-- Full / desktop variant (cart page) -->
+  <div v-else class="flex items-center gap-6 py-4 border-t border-border">
+    <NuxtLink :to="`/products/${product?.slug}`" class="shrink-0">
+      <img
+        :src="product?.primaryImage ?? ''"
+        :alt="product?.name"
+        class="w-24 h-24 rounded-xl object-cover bg-muted"
+      />
+    </NuxtLink>
+
+    <div class="flex-1 min-w-0">
+      <NuxtLink :to="`/products/${product?.slug}`">
+        <h3 class="text-sm font-semibold text-foreground hover:text-primary transition-colors line-clamp-2">
+          {{ product?.name }}
+        </h3>
+      </NuxtLink>
+      <p v-if="product?.skincareCategory" class="text-xs text-primary mt-0.5">{{ product.skincareCategory }}</p>
+    </div>
+
+    <!-- Price -->
+    <div class="w-28 text-center text-sm font-medium text-foreground">
+      {{ formatCOP(item.price) }}
+    </div>
+
+    <!-- Quantity -->
+    <div class="flex items-center border border-border rounded-lg overflow-hidden h-9">
+      <button
+        class="w-9 flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-40"
+        :disabled="item.quantity === 1"
+        @click="emit('decreaseQuantity')"
+      >
+        <Icon name="lucide:minus" class="w-3.5 h-3.5" />
+      </button>
+      <span class="w-10 text-center text-sm font-medium">{{ item.quantity }}</span>
+      <button
+        class="w-9 flex items-center justify-center hover:bg-muted transition-colors"
+        @click="emit('increaseQuantity')"
+      >
+        <Icon name="lucide:plus" class="w-3.5 h-3.5" />
+      </button>
+    </div>
+
+    <!-- Total -->
+    <div class="w-28 text-right text-sm font-semibold text-foreground">
+      {{ formatCOP(cartItemPrice) }}
+    </div>
+
+    <!-- Remove -->
+    <button class="p-1.5 text-muted-foreground hover:text-foreground transition-colors" @click="emit('removeItem')">
+      <Icon name="lucide:trash-2" class="w-4 h-4" />
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Minus, Plus, CircleX } from 'lucide-vue-next'
-import Button from '../ui/button/Button.vue'
 import type { TablesInsert } from '~/types/database.types'
 import { useCart } from '~/composables/cartProduct'
 
@@ -119,10 +114,10 @@ const emit = defineEmits<{
 
 const item = toRef(() => props.item)
 const { cartItemPrice, product } = useCart(item)
-</script>
 
-<style lang="scss" scoped>
-.cart-item__circle-x:hover {
-  fill: #94a3b8;
+function formatCOP(value: number) {
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency', currency: 'COP', maximumFractionDigits: 0,
+  }).format(value)
 }
-</style>
+</script>
