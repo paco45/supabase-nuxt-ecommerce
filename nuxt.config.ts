@@ -79,9 +79,9 @@ export default defineNuxtConfig({
     host: '0.0.0.0',
   },
   runtimeConfig: {
-    stripeSecretKey: process.env.STRIPE_SECRET_KEY,
+    mercadopagoAccessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
     public: {
-      stripePublishableKey: process.env.STRIPE_PUBLIC_KEY,
+      mercadopagoPublicKey: process.env.MERCADOPAGO_PUBLIC_KEY,
     },
   },
 })
